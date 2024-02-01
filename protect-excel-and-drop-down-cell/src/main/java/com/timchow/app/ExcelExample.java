@@ -35,7 +35,7 @@ public class ExcelExample {
 
 		// save excel to project directory
 		try {
-			FileOutputStream out = new FileOutputStream("workbook.xlsx");
+			FileOutputStream out = new FileOutputStream("workbook.xls");
 			workbook.write(out);
 			out.close();
 		} catch (IOException e) {
