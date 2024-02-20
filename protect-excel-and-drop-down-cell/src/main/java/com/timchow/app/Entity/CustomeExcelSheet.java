@@ -4,51 +4,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomeExcelSheet {
-    public enum RecordType{
-        typeA( "Type A", "sheet name", "a", "typeATemplate.xls");
+    public enum RecordType {
+
+        typeA("Type A", "sheet name", "a",
+                new String[] { "name", "gender", "recordTypeShortForm", "status" },
+                new String[] { "Pending", "TypeA - Pass", "TypeA - Fail", "The candidate is not found in our record" },
+                "path");
 
         public final String recordTypeName;
         public final String sheetName;
         public final String recordTypeShortForm;
+        public final String[] sheetHeader;
+        public final String[] responseTemplate;
         public final String templatePath;
-        private RecordType(String recordTypeName, String sheetName, String recordTypeShortForm, String templatePath) {
+
+        private RecordType(String recordTypeName, String sheetName, String recordTypeShortForm, String[] sheetHeader,
+                String[] responseTemplate, String templatePath) {
             this.recordTypeName = recordTypeName;
             this.sheetName = sheetName;
             this.recordTypeShortForm = recordTypeShortForm;
+            this.sheetHeader = sheetHeader;
+            this.responseTemplate = responseTemplate;
             this.templatePath = templatePath;
         }
 
-        public static RecordType fromrecordTypeName(String recordTypeName){
-            for(RecordType s: RecordType.values()){
-                if(s.recordTypeName.equals(recordTypeName))
+        public static RecordType fromrecordTypeName(String recordTypeName) {
+            for (RecordType s : RecordType.values()) {
+                if (s.recordTypeName.equals(recordTypeName))
                     return s;
             }
-            throw new IllegalArgumentException("Illegal CatCExamRecord recordTypeName (cannot covert recordTypeName to CatCExamRecord.Subject): " + recordTypeName);
+            throw new IllegalArgumentException(
+                    "Illegal CatCExamRecord recordTypeName (cannot covert recordTypeName to CatCExamRecord.Subject): "
+                            + recordTypeName);
         }
 
     }
-    
+
     private RecordType recordType;
     private String title;
     private String subTitle;
-    private List<String> sheetHeader;
     private List<CustomeRecord> examRecords;
-    private List<String> responseTemplate;
-    
 
-    public CustomeExcelSheet(){
-        sheetHeader = new ArrayList<>();
+    public CustomeExcelSheet() {
         examRecords = new ArrayList<>();
-        responseTemplate = new ArrayList<>();
     }
 
-    public CustomeExcelSheet(RecordType recordType,  String title, String subTitle, List<String> sheetHeader, List<CustomeRecord> examRecords, List<String> responseTemplate) {
+    public CustomeExcelSheet(RecordType recordType, String title, String subTitle, List<CustomeRecord> examRecords) {
         this.recordType = recordType;
         this.title = title;
         this.subTitle = subTitle;
-        this.sheetHeader = sheetHeader;
         this.examRecords = examRecords;
-        this.responseTemplate = responseTemplate;
     }
 
     public RecordType getRecordType() {
@@ -75,14 +80,6 @@ public class CustomeExcelSheet {
         this.subTitle = subTitle;
     }
 
-    public List<String> getSheetHeader() {
-        return sheetHeader;
-    }
-
-    public void setSheetHeader(List<String> sheetHeader) {
-        this.sheetHeader = sheetHeader;
-    }
-
     public List<CustomeRecord> getExamRecords() {
         return examRecords;
     }
@@ -90,14 +87,5 @@ public class CustomeExcelSheet {
     public void setExamRecords(List<CustomeRecord> examRecords) {
         this.examRecords = examRecords;
     }
-
-    public List<String> getResponseTemplate() {
-        return responseTemplate;
-    }
-
-    public void setResponseTemplate(List<String> responseTemplate) {
-        this.responseTemplate = responseTemplate;
-    }
-
 
 }

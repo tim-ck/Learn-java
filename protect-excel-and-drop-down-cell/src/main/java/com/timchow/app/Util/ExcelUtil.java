@@ -18,7 +18,7 @@ public class ExcelUtil {
 		System.out.println(sheet.getLastRowNum());
 	}
 
-	public static void createCatCExcelTemplate(CustomeExcelSheet customeExcelSheet, String fileName) {
+	public static void createExcelTemplate(CustomeExcelSheet customeExcelSheet, String fileName) {
 		HSSFWorkbook workbook = new HSSFWorkbook();
 		RecordType recordType = customeExcelSheet.getRecordType();
 		String title = customeExcelSheet.getTitle();
@@ -36,8 +36,8 @@ public class ExcelUtil {
 		CellStyle headerCellStyle = workbook.createCellStyle();
 		headerCellStyle.setWrapText(true);
 		headerCellStyle.setVerticalAlignment(VerticalAlignment.TOP);
-		for (int j = 0; j < customeExcelSheet.getSheetHeader().size(); j++) {
-			headerRow.createCell(j).setCellValue(customeExcelSheet.getSheetHeader().get(j));
+		for (int j = 0; j < customeExcelSheet.getRecordType().sheetHeader.length; j++) {
+			headerRow.createCell(j).setCellValue(customeExcelSheet.getRecordType().sheetHeader[j]);
 			sheet.setColumnWidth(j, 5000);
 			headerRow.getCell(j).setCellStyle(headerCellStyle);
 		}
@@ -45,11 +45,11 @@ public class ExcelUtil {
 		sheet.setColumnWidth(4, 10000);
 		
 		Sheet referenceSheet = workbook.createSheet("table");
-		createCatCReferenceSheet(workbook, referenceSheet, customeExcelSheet.getResponseTemplate(), recordType.recordTypeShortForm);
+		createReferenceSheet(workbook, referenceSheet, customeExcelSheet.getRecordType().responseTemplate, recordType.recordTypeShortForm);
 		referenceSheet.protectSheet("passwordForReferenceSheet");
 				
 		createDropDownCellByReferenceSheet(workbook, sheet, 3, 1000, 3, 3, recordType.recordTypeShortForm, "table",
-				0, 0, 1, customeExcelSheet.getResponseTemplate().size());
+				0, 0, 1, customeExcelSheet.getRecordType().responseTemplate.length);
 
 		try (FileOutputStream out = new FileOutputStream(fileName)) {
 			workbook.write(out);
@@ -65,8 +65,8 @@ public class ExcelUtil {
 	 * <p>
 	 * all row and column index start from 0.
 	 */
-	public static void createCatCReferenceSheet(Workbook wb, Sheet referenceSheet,
-			List<String> dataValidationList, String dataValidationName) {
+	public static void createReferenceSheet(Workbook wb, Sheet referenceSheet,
+			String[] dataValidationList, String dataValidationName) {
 		Row row = referenceSheet.createRow(0);
 		Cell sheetNameCell = row.createCell(0);
 		sheetNameCell.setCellValue(dataValidationName);
@@ -74,9 +74,9 @@ public class ExcelUtil {
 		style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
 		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		sheetNameCell.setCellStyle(style);
-		for (int i = 0; i < dataValidationList.size(); i++) {
+		for (int i = 0; i < dataValidationList.length; i++) {
 			Row dataRow = referenceSheet.createRow(i + 1);
-			dataRow.createCell(0).setCellValue(dataValidationList.get(i));
+			dataRow.createCell(0).setCellValue(dataValidationList[i]);
 		}
 	}
 
