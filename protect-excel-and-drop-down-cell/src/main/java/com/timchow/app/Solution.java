@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.timchow.app.Entity.*;
 import com.timchow.app.Entity.CustomeExcelSheet.RecordType;
@@ -30,15 +31,18 @@ public class Solution {
     }
 
     private static void downloadTypeAExcelForm(List<CustomeRecord> customeRecordList) {
-        Map<RecordType, List<CustomeRecord>> customeRecordsListMap = new HashMap<>();
-        for (CustomeRecord record : customeRecordList) {
-            List<CustomeRecord> customeRecordsList = customeRecordsListMap.get(record.getRecordType());
-            if (customeRecordsList == null) {
-                customeRecordsList = new ArrayList<CustomeRecord>();
-                customeRecordsListMap.put(record.getRecordType(), customeRecordsList);
-            }
-            customeRecordsList.add(record);
-        }
+        Map<RecordType, List<CustomeRecord>> customeRecordsListMap = customeRecordList.stream().collect(Collectors.groupingBy(CustomeRecord::getRecordType));
+        
+        
+        // less readable than stream but faster 
+        // for (CustomeRecord record : customeRecordList) {
+        //     List<CustomeRecord> customeRecordsList = customeRecordsListMap.get(record.getRecordType());
+        //     if (customeRecordsList == null) {
+        //         customeRecordsList = new ArrayList<CustomeRecord>();
+        //         customeRecordsListMap.put(record.getRecordType(), customeRecordsList);
+        //     }
+        //     customeRecordsList.add(record);
+        // }
 
         for (Map.Entry<RecordType, List<CustomeRecord>> entry : customeRecordsListMap.entrySet()) {
             RecordType recordType = entry.getKey();
