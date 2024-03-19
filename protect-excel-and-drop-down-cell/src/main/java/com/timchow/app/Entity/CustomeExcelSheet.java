@@ -8,7 +8,7 @@ public class CustomeExcelSheet {
 
         typeA("Type A", "sheet name", "a",
                 new String[] { "name", "gender", "recordTypeShortForm", "status" },
-                new String[] { "Pending", "TypeA - Pass", "TypeA - Fail", "The candidate is not found in our record" },
+                new String[] { "", "Pending", "TypeA - Pass", "TypeA - Fail", "The candidate is not found in our record" },
                 "template.xls");
 
         public final String recordTypeName;

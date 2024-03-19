@@ -103,6 +103,7 @@ public class ExcelUtil {
 		DVConstraint constraint = DVConstraint.createFormulaListConstraint(namedCellName);
 		CellRangeAddressList addressList = new CellRangeAddressList(firstRow, lastRow, firstCol, lastCol);
 		HSSFDataValidation validation = new HSSFDataValidation(addressList, constraint);
+		validation.setEmptyCellAllowed(false);
 		sheet.addValidationData(validation);
 	}
 
